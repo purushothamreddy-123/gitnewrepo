@@ -2,8 +2,13 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-COPY . /app
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install -U pip && pip install pytest
+COPY . .
 
-CMD ["pytest", "test_calculator.py", "--junitxml=test-reports/report.xml"]
+# Set the PYTHONPATH environment variable
+ENV PYTHONPATH=/app
+
+# Specify the default command to run pytest
+CMD ["pytest", "--junitxml=results.xml"]
